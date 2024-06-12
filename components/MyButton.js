@@ -1,10 +1,27 @@
 import { StyleSheet, Text, Pressable } from 'react-native';
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import * as ImagePicker from "expo-image-picker";
 
-export default function MyButton({ label }) {
+export default function MyButton({ label, handleBackImage }) {
+
+
+    const pickImage = async ()=> {
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            quality: 1
+        })
+
+        if(!result.canceled){
+            handleBackImage(result);
+        }else {
+            console.log("You did not picke up Images");
+        }
+    }
+
     return (
         <view style={styles.container}>
-            <Pressable style={styles.buttonStyle} onPress={() => { alert('Hi dear') }}>
+            <Pressable style={styles.buttonStyle} onPress={pickImage}>
                 <FontAwesome
                     name="picture-o"
                     size={18}
