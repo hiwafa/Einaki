@@ -23,7 +23,6 @@ export default function HomeScreen() {
                 <Link href='about'>Two</Link>
                 <Link href='about'>Three</Link>
             </View>
-
         </View>
     )
 }
