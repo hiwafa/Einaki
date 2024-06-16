@@ -1,20 +1,17 @@
-import React, { createContext, useReducer } from "react";
+import React, { useReducer } from "react";
 import { View, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 
 
-import HomePage from "./home";
-import { GlobalData } from "./data";
-export const GlobalContext = createContext(null);
+import HomePage from "../components/HomePage";
 
-export default function RootApp() {
+
+export interface EmptyProps {}
+
+export default function RootApp({}: EmptyProps) {
 
     return (
-        <GlobalContext.Provider value={{
-            ...GlobalData
-        }}>
-            <HomePage />
-        </GlobalContext.Provider>
+        <HomePage />
     )
 }
 
@@ -27,8 +24,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignContent: 'flex-start',
-
-
+        
         gap: 5,
 
         backgroundColor: 'orange',
