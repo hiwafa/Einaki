@@ -4,10 +4,10 @@ import { View, Text, Pressable  } from "react-native";
 
 export default function UserScreen(){
     const router = useRouter();
-    const {userId} = useLocalSearchParams(); 
+    const {id} = useLocalSearchParams(); 
     return (
         <View>
-            <Text>User Page: {userId}</Text>
+            <Text>User Page: {id}</Text>
             <Pressable onPress={()=> router.replace('/')}>
                 <Text>Go Back</Text>
             </Pressable>

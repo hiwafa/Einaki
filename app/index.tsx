@@ -1,29 +1,20 @@
+import React, { createContext, useReducer } from "react";
+import { View, StyleSheet } from "react-native";
 import { Link } from "expo-router";
-import { View, Text, StyleSheet } from "react-native";
 
 
-export default function HomeScreen() {
+import HomePage from "./home";
+import { GlobalData } from "./data";
+export const GlobalContext = createContext(null);
+
+export default function RootApp() {
+
     return (
-        <View style={styles.mainContainer}>
-
-            <View style={styles.boxContainer}>
-                <Link href='about'>Go To About Page</Link>
-            </View>
-
-            <View style={styles.boxContainer}>
-                <Link href='about'>Go To About Page</Link>
-            </View>
-
-            <View style={styles.boxContainer}>
-                <Link href='about'>Go To About Page</Link>
-            </View>
-
-            <View style={styles.boxContainer}>
-                <Link href='about'>One</Link>
-                <Link href='about'>Two</Link>
-                <Link href='about'>Three</Link>
-            </View>
-        </View>
+        <GlobalContext.Provider value={{
+            ...GlobalData
+        }}>
+            <HomePage />
+        </GlobalContext.Provider>
     )
 }
 
@@ -36,7 +27,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignContent: 'flex-start',
-        
+
 
         gap: 5,
 
