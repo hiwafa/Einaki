@@ -17,7 +17,7 @@ export default function HomePage() {
     const [pickedEmoji, setPickedEmoji] = useState(emji);
 
     return (
-        <GestureHandlerRootView style={{flex: 1}}>
+        <GestureHandlerRootView style={{flex: 1, paddingTop: 100, backgroundColor: 'orange', justifyContent: 'center', alignItems: 'center'}}>
             <Text>Home Page: {homeData.lang.farsi.currentLang} mmm</Text>
             <Link href='settings'>Go To Settings</Link>
             {pickedEmoji !== null ? <EmojiSticker imageSize={40} stickerSource={pickedEmoji} /> : null}
@@ -28,7 +28,31 @@ export default function HomePage() {
 
 function EmojiSticker({ imageSize, stickerSource }) {
 
+
+    const translateX = useSharedValue(0);
+    const translateY = useSharedValue(0);
+    const drag = Gesture.Pan()
+    .onChange((event) => {
+      translateX.value += event.changeX;
+      translateY.value += event.changeY;
+    });
+
+    const containerStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateX: translateX.value,
+        },
+        {
+          translateY: translateY.value,
+        },
+      ],
+    };
+  });
+
     const scaleImage = useSharedValue(imageSize);
+
+    
 
     const doubleTap = Gesture.Tap()
         .numberOfTaps(2)
@@ -47,15 +71,16 @@ function EmojiSticker({ imageSize, stickerSource }) {
 
 
     return (
-        <View style={{ top: -350 }}>
-            <GestureDetector gesture={doubleTap}>
-                <Animated.Image
-                    source={stickerSource}
-                    resizeMode="contain"
-                    style={[imageStyle, { width: imageSize, height: imageSize }]}
-                />
-            </GestureDetector>
-
-        </View>
+        <GestureDetector gesture={drag}>
+      <Animated.View style={[containerStyle, { top: -350 }]}>
+        <GestureDetector gesture={doubleTap}>
+          <Animated.Image
+            source={stickerSource}
+            resizeMode="contain"
+            style={[imageStyle, { width: imageSize, height: imageSize }]}
+          />
+        </GestureDetector>
+      </Animated.View>
+    </GestureDetector>
     );
 }
