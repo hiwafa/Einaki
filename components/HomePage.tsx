@@ -1,86 +1,91 @@
 
-import React, { useContext, useState } from "react";
-import { View, Text, Pressable } from "react-native"
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, Pressable, StyleSheet } from "react-native"
 
 import { GlobalContext } from "../app/_layout";
 import { Link } from "expo-router";
 import { Image } from 'expo-image';
 
-import { GestureHandlerRootView, Gesture, GestureDetector } from "react-native-gesture-handler";
+import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-const emji = require('../assets/images/icon.png');
+const emoji = require('../assets/images/emoji1.png');
 
 export default function HomePage() {
 
     const homeData = useContext(GlobalContext);
-    const [pickedEmoji, setPickedEmoji] = useState(emji);
+
+    const gesture = Gesture.Tap();
+
+
+    useEffect(()=> {
+
+      gesture.onBegin(() => {
+        console.log(_WORKLET);
+      });
+
+    }, [])
 
     return (
         <GestureHandlerRootView style={{flex: 1, paddingTop: 100, backgroundColor: 'orange', justifyContent: 'center', alignItems: 'center'}}>
             <Text>Home Page: {homeData.lang.farsi.currentLang} mmm</Text>
             <Link href='settings'>Go To Settings</Link>
-            {pickedEmoji !== null ? <EmojiSticker imageSize={40} stickerSource={pickedEmoji} /> : null}
+            <Ball />
         </GestureHandlerRootView>
     )
 }
 
 
-function EmojiSticker({ imageSize, stickerSource }) {
+function Ball() {
 
+  const isPressed = useSharedValue(false);
+  const offset = useSharedValue({ x: 0, y: 0 });
 
-    const translateX = useSharedValue(0);
-    const translateY = useSharedValue(0);
-    const drag = Gesture.Pan()
-    .onChange((event) => {
-      translateX.value += event.changeX;
-      translateY.value += event.changeY;
+  const start = useSharedValue({ x: 0, y: 0 });
+  const gesture = Gesture.Pan()
+    .onBegin(() => {
+      isPressed.value = true;
+    })
+    .onUpdate((e) => {
+      offset.value = {
+        x: e.translationX + start.value.x,
+        y: e.translationY + start.value.y,
+      };
+    })
+    .onEnd(() => {
+      start.value = {
+        x: offset.value.x,
+        y: offset.value.y,
+      };
+    })
+    .onFinalize(() => {
+      isPressed.value = false;
     });
 
-    const containerStyle = useAnimatedStyle(() => {
+  const animatedStyles = useAnimatedStyle(() => {
     return {
       transform: [
-        {
-          translateX: translateX.value,
-        },
-        {
-          translateY: translateY.value,
-        },
+        { translateX: offset.value.x },
+        { translateY: offset.value.y },
+        { scale: withSpring(isPressed.value ? 1.2 : 1) },
       ],
+      backgroundColor: isPressed.value ? 'yellow' : 'blue',
     };
   });
 
-    const scaleImage = useSharedValue(imageSize);
-
-    
-
-    const doubleTap = Gesture.Tap()
-        .numberOfTaps(2)
-        .onStart(() => {
-            if (scaleImage.value !== imageSize * 2) {
-                scaleImage.value = scaleImage.value * 2;
-            }
-        });
-
-    const imageStyle = useAnimatedStyle(() => {
-        return {
-            width: withSpring(scaleImage.value),
-            height: withSpring(scaleImage.value),
-        };
-    });
-
-
-    return (
-        <GestureDetector gesture={drag}>
-      <Animated.View style={[containerStyle, { top: -350 }]}>
-        <GestureDetector gesture={doubleTap}>
-          <Animated.Image
-            source={stickerSource}
-            resizeMode="contain"
-            style={[imageStyle, { width: imageSize, height: imageSize }]}
-          />
-        </GestureDetector>
-      </Animated.View>
+  return (
+    <GestureDetector gesture={gesture}>
+      <Animated.View style={[styles.ball, animatedStyles]} />
     </GestureDetector>
-    );
+  );
 }
+
+const styles = StyleSheet.create({
+  ball: {
+    width: 100,
+    height: 100,
+    borderRadius: 100,
+    backgroundColor: 'blue',
+    alignSelf: 'center',
+  },
+});
