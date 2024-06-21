@@ -16,20 +16,18 @@ export default function RootApp({ }: EmptyProps) {
 
             </View>
 
-            <View style={styles.container}>
-                <View style={styles.overflowContainer}>
-                    <ScrollView contentContainerStyle={styles.scrollView}>
-                        {Array.from({ length: 50 }, (_, index) => (
-                            <Text key={index} style={styles.text}>
-                                Item {index + 1}
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis similique, molestias possimus aliquam ullam alias quas reprehenderit ad neque architecto voluptates molestiae ratione laborum soluta velit, porro corporis ipsam ipsa.
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis similique, molestias possimus aliquam ullam alias quas reprehenderit ad neque architecto voluptates molestiae ratione laborum soluta velit, porro corporis ipsam ipsa.
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis similique, molestias possimus aliquam ullam alias quas reprehenderit ad neque architecto voluptates molestiae ratione laborum soluta velit, porro corporis ipsam ipsa.
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis similique, molestias possimus aliquam ullam alias quas reprehenderit ad neque architecto voluptates molestiae ratione laborum soluta velit, porro corporis ipsam ipsa.
-                            </Text>
-                        ))}
-                    </ScrollView>
-                </View>
+            <View style={styles.overflowContainer}>
+                <ScrollView contentContainerStyle={styles.scrollView}>
+                    {Array.from({ length: 50 }, (_, index) => (
+                        <Text key={index} style={styles.text}>
+                            Item {index + 1}
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis similique, molestias possimus aliquam ullam alias quas reprehenderit ad neque architecto voluptates molestiae ratione laborum soluta velit, porro corporis ipsam ipsa.
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis similique, molestias possimus aliquam ullam alias quas reprehenderit ad neque architecto voluptates molestiae ratione laborum soluta velit, porro corporis ipsam ipsa.
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis similique, molestias possimus aliquam ullam alias quas reprehenderit ad neque architecto voluptates molestiae ratione laborum soluta velit, porro corporis ipsam ipsa.
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis similique, molestias possimus aliquam ullam alias quas reprehenderit ad neque architecto voluptates molestiae ratione laborum soluta velit, porro corporis ipsam ipsa.
+                        </Text>
+                    ))}
+                </ScrollView>
             </View>
 
         </View>
@@ -41,7 +39,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         margin: 0,
         padding: 0,
-        // flex: 1,
+        flex: 1,
         // flexDirection: 'row',
         // flexWrap: 'wrap',
         // alignContent: 'flex-start',
@@ -62,24 +60,18 @@ const styles = StyleSheet.create({
     mainHeader: {
         height: 70,
         width: '100%',
-        backgroundColor: 'green'
-    },
-
-    mainBody: {
-        overflow: 'scroll'
-    },
-
-
-    container: {
-        flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        // backgroundColor: 'green'
     },
     overflowContainer: {
-        height: height-70,
+        height: height - 70,
         width: '100%',
-        borderWidth: 1,
-        borderColor: '#000',
+        // borderWidth: 1,
+        // borderColor: '#000',
     },
     scrollView: {
         padding: 10,
