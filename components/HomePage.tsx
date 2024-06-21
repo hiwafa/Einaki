@@ -15,19 +15,8 @@ export default function HomePage() {
 
     const homeData = useContext(GlobalContext);
 
-    const gesture = Gesture.Tap();
-
-
-    useEffect(()=> {
-
-      gesture.onBegin(() => {
-        console.log(_WORKLET);
-      });
-
-    }, [])
-
     return (
-        <GestureHandlerRootView style={{flex: 1, paddingTop: 100, backgroundColor: 'orange', justifyContent: 'center', alignItems: 'center'}}>
+        <GestureHandlerRootView style={{flex: 1, paddingTop: 100, backgroundColor: 'yellow', justifyContent: 'center', alignItems: 'center'}}>
             <Text>Home Page: {homeData.lang.farsi.currentLang} mmm</Text>
             <Link href='settings'>Go To Settings</Link>
             <Ball />
@@ -40,8 +29,8 @@ function Ball() {
 
   const isPressed = useSharedValue(false);
   const offset = useSharedValue({ x: 0, y: 0 });
-
   const start = useSharedValue({ x: 0, y: 0 });
+  
   const gesture = Gesture.Pan()
     .onBegin(() => {
       isPressed.value = true;
@@ -67,7 +56,7 @@ function Ball() {
       transform: [
         { translateX: offset.value.x },
         { translateY: offset.value.y },
-        { scale: withSpring(isPressed.value ? 1.2 : 1) },
+        { scale: withSpring(isPressed.value ? 2 : 1) },
       ],
       backgroundColor: isPressed.value ? 'yellow' : 'blue',
     };
