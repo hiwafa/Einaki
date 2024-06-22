@@ -1,9 +1,12 @@
 import React, { useReducer } from "react";
 import { View, StyleSheet, Text, ScrollView, Dimensions } from "react-native";
+import { AntDesign } from '@expo/vector-icons';
 import { Link } from "expo-router";
 
 
 import HomePage from "../components/HomePage";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import SettingsButton from "../components/SettingsButton";
 
 const { height } = Dimensions.get('window');
 export interface EmptyProps { }
@@ -13,7 +16,10 @@ export default function RootApp({ }: EmptyProps) {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.mainHeader}>
-
+                <View style={{ marginHorizontal: 20}}>
+                    <SettingsButton />
+                </View>
+                <View style={{flex: 1, marginHorizontal: 20}}>3</View>
             </View>
 
             <View style={styles.overflowContainer}>
@@ -65,6 +71,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
         // backgroundColor: 'green'
     },
     overflowContainer: {
