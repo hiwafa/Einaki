@@ -7,6 +7,7 @@ import { Link } from "expo-router";
 import HomePage from "../components/HomePage";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SettingsButton from "../components/SettingsButton";
+import SwitchButton from "../components/SwitchButton";
 
 const { height } = Dimensions.get('window');
 export interface EmptyProps { }
@@ -17,7 +18,7 @@ export default function RootApp({ }: EmptyProps) {
         <View style={styles.mainContainer}>
             <View style={styles.mainHeader}>
                 <View style={{ marginHorizontal: 20}}>
-                    <SettingsButton />
+                    <SwitchButton />
                 </View>
                 <View style={{flex: 1, marginHorizontal: 20}}>3</View>
             </View>

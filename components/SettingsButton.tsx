@@ -53,7 +53,7 @@ export default function SettingsButton() {
     });
 
     return (
-        <GestureHandlerRootView style={{ minWidth: 0 }}>
+        <GestureHandlerRootView style={{}}>
             <GestureDetector gesture={gesture}>
                 <Animated.View style={[animatedStyles]} >
                     <AntDesign name="home" size={24} color="black" />
