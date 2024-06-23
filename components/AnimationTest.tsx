@@ -8,20 +8,31 @@ export default function AnimationTest() {
 
     const animatedValue = useSharedValue(100);
     const animW = useSharedValue(100)
+    const translateX = useSharedValue(0)
 
     return (
         <View style={styles.container}>
-            <Animated.View style={{
+            <Animated.View style={[{
                 width: animW,
                 height: animatedValue,
                 backgroundColor: 'violet',
                 marginBottom: 10
-            }} />
+            },{
+                transform: [
+                    {translateX}
+                ]
+            }]} />
             <Button title="Increase Height" onPress={()=> { 
                 animatedValue.value = withSpring(animatedValue.value+50)
              }} />
             <Button title="Increase Width" onPress={()=> { 
                 animW.value = withSpring(animW.value+50)
+             }} />
+            <Button title="Translate X" onPress={()=> { 
+                translateX.value = withSpring(translateX.value+50)
+             }} />
+            <Button title="Translate -X" onPress={()=> { 
+                translateX.value = withSpring(translateX.value-50)
              }} />
         </View>
     )
