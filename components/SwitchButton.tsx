@@ -3,9 +3,11 @@ import { Image, StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { interpolate, runOnJS, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
+
 export default function SwitchButton() {
 
-    const translateX = useSharedValue(0)
+    const translateX = useSharedValue(0);
+    const prevTranslationX = useSharedValue(0);
 
     const [boxDimensions, setBoxDimensions] = useState({ x: 0, y: 0, width: 0, height: 0 })
     const [circleDimensions, setCircleDimensions] = useState({ x: 0, y: 0, width: 0, height: 0 })
@@ -15,31 +17,58 @@ export default function SwitchButton() {
         // alert("value: "+value)
     }
 
-    const pan = Gesture.Pan().onChange((event) => {
+    const pan = Gesture.Pan()
+        .onStart(() => {
+            prevTranslationX.value = translateX.value;
+        })
+        .onUpdate(e => {
+            const maxOffset = boxDimensions.width - circleDimensions.width - 20;
+            if (e.translationX >= 0 && e.translationX <= maxOffset) {
+                translateX.value = withSpring(e.translationX)
+            }
+        })
+        .onEnd(e => {
+            const middleOffset = boxDimensions.width / 2 - circleDimensions.width / 2;
+            const end = boxDimensions.width - circleDimensions.width - 20;
 
-        const maxOffset = boxDimensions.width - circleDimensions.width - 20;
+            if (e.translationX < middleOffset) {
 
-        if (event.translationX >= 0 && event.translationX <= maxOffset) {
-            translateX.value = event.translationX
-        }
+                translateX.value = withSpring(0)
 
-    }).onFinalize((event) => {
+            } else {
 
-        const middleOffset = boxDimensions.width / 2 - circleDimensions.width / 2;
-        const end = boxDimensions.width - circleDimensions.width - 20;
+                translateX.value = withSpring(end, {}, () => {
+                    // runOnJS(onSwipe)(end)
+                })
 
-        if (event.translationX < middleOffset) {
+            }
+        })
 
-            translateX.value = withSpring(0)
+    // const pan = Gesture.Pan().onChange((event) => {
 
-        } else {
+    //     const maxOffset = boxDimensions.width - circleDimensions.width - 20;
 
-            translateX.value = withSpring(end, {}, () => {
-                runOnJS(onSwipe)(end)
-            })
+    //     if (event.translationX >= 0 && event.translationX <= maxOffset) {
+    //         translateX.value = event.translationX
+    //     }
 
-        }
-    })
+    // }).onFinalize((event) => {
+
+    //     const middleOffset = boxDimensions.width / 2 - circleDimensions.width / 2;
+    //     const end = boxDimensions.width - circleDimensions.width - 20;
+
+    //     if (event.translationX < middleOffset) {
+
+    //         translateX.value = withSpring(0)
+
+    //     } else {
+
+    //         translateX.value = withSpring(end, {}, () => {
+    //             runOnJS(onSwipe)(end)
+    //         })
+
+    //     }
+    // })
 
 
     const swipeAnimatedStyle = useAnimatedStyle(() => ({
@@ -78,9 +107,7 @@ export default function SwitchButton() {
                         <Image style={styles.swipeArrowIcon} source={require('../assets/images/swipe_arrow.png')} />
                     </Animated.View>
                 </GestureDetector>
-
-                <Animated.Text style={[styles.swipeTxt, textAnimatedStyle]}> swipe to start</Animated.Text>
-
+                <Animated.Text style={[styles.swipeTxt, textAnimatedStyle]}>swipe to start</Animated.Text>
             </View>
         </GestureHandlerRootView>
     );
@@ -108,8 +135,6 @@ const styles = StyleSheet.create({
         },
         shadowColor: "#000000",
         shadowOpacity: 0.1
-
-
     },
     circle: {
         width: "25%",

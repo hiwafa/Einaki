@@ -8,35 +8,34 @@ import HomePage from "../components/HomePage";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SettingsButton from "../components/SettingsButton";
 import SwitchButton from "../components/SwitchButton";
+import AnimationTest from "../components/AnimationTest";
 
 const { height } = Dimensions.get('window');
 export interface EmptyProps { }
 
 export default function RootApp({ }: EmptyProps) {
 
+    return <AnimationTest />
+    
     return (
         <View style={styles.mainContainer}>
             <View style={styles.mainHeader}>
                 <View style={{ marginHorizontal: 20}}>
                     <SwitchButton />
                 </View>
-                <View style={{flex: 1, marginHorizontal: 20}}>3</View>
+                <View style={{flex: 1, marginHorizontal: 20}}>
+                    <Text>3333</Text>
+                </View>
             </View>
-
             <View style={styles.overflowContainer}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
                     {Array.from({ length: 50 }, (_, index) => (
                         <Text key={index} style={styles.text}>
                             Item {index + 1}
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis similique, molestias possimus aliquam ullam alias quas reprehenderit ad neque architecto voluptates molestiae ratione laborum soluta velit, porro corporis ipsam ipsa.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis similique, molestias possimus aliquam ullam alias quas reprehenderit ad neque architecto voluptates molestiae ratione laborum soluta velit, porro corporis ipsam ipsa.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis similique, molestias possimus aliquam ullam alias quas reprehenderit ad neque architecto voluptates molestiae ratione laborum soluta velit, porro corporis ipsam ipsa.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis similique, molestias possimus aliquam ullam alias quas reprehenderit ad neque architecto voluptates molestiae ratione laborum soluta velit, porro corporis ipsam ipsa.
                         </Text>
                     ))}
                 </ScrollView>
             </View>
-
         </View>
     )
 }
@@ -65,6 +64,7 @@ const styles = StyleSheet.create({
     },
 
     mainHeader: {
+        // marginTop: 100,
         height: 70,
         width: '100%',
         shadowColor: '#000',
