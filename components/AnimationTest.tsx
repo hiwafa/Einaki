@@ -1,26 +1,27 @@
 import { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 
-import Animated, {useSharedValue} from 'react-native-reanimated';
+import Animated, { useSharedValue , withSpring} from 'react-native-reanimated';
 
 
 export default function AnimationTest() {
 
     const animatedValue = useSharedValue(100);
-    const [w, setW] = useState(100)
+    const animW = useSharedValue(100)
 
     return (
         <View style={styles.container}>
             <Animated.View style={{
-                width: w,
+                width: animW,
                 height: animatedValue,
-                backgroundColor: 'violet'
+                backgroundColor: 'violet',
+                marginBottom: 10
             }} />
             <Button title="Increase Height" onPress={()=> { 
-                animatedValue.value +=5
+                animatedValue.value = withSpring(animatedValue.value+50)
              }} />
             <Button title="Increase Width" onPress={()=> { 
-                setW(w+5)
+                animW.value = withSpring(animW.value+50)
              }} />
         </View>
     )
