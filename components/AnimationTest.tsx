@@ -1,19 +1,25 @@
 import { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 
-import Animated, { useSharedValue, withSpring, withTiming, useAnimatedStyle, Easing } from 'react-native-reanimated';
-
+import Animated, { useSharedValue, withSpring, withTiming, useAnimatedStyle, Easing, useAnimatedProps } from 'react-native-reanimated';
+import { Circle, Svg } from 'react-native-svg';
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 export default function AnimationTest() {
 
     const animatedValue = useSharedValue(100);
-    const animW = useSharedValue(100)
-    const translateX = useSharedValue(0)
+    const animW = useSharedValue(100);
+    const translateX = useSharedValue(0);
+    const radius = useSharedValue(10);
 
     const animatedStyles = useAnimatedStyle(() => ({
         transform: [
             { translateX: withSpring(translateX.value * 2) }
         ]
+    }));
+
+    const animatedProps = useAnimatedProps(() => ({
+        r: withTiming(radius.value),
     }));
 
     return (
@@ -40,11 +46,19 @@ export default function AnimationTest() {
                 translateX.value = withTiming(
                     translateX.value - 50,
                     {
-                        duration: 800,
+                        duration: 3800,
                         easing: Easing.inOut(Easing.quad)
                     }
                 )
             }} />
+
+            <Button title="Change Circle" onPress={() => {
+                radius.value += 10
+            }} />
+
+            <Svg>
+                <AnimatedCircle cx="50" cy="50" r={radius} fill="blue" animatedProps={animatedProps} />
+            </Svg>
         </View>
     )
 }
