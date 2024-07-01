@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
 import Animated, { useSharedValue, withSpring, withTiming, useAnimatedStyle, Easing, useAnimatedProps } from 'react-native-reanimated';
 import { Circle, Svg } from 'react-native-svg';
@@ -56,6 +57,8 @@ export default function AnimationTest() {
                 radius.value += 10
             }} />
 
+            <Ball />
+
             <Svg>
                 <AnimatedCircle cx="50" cy="50" r={radius} fill="blue" animatedProps={animatedProps} />
             </Svg>
@@ -64,11 +67,64 @@ export default function AnimationTest() {
 }
 
 
+const Ball = () => {
+
+    const isPressed = useSharedValue(false);
+    const offset = useSharedValue({ x: 0, y: 0 });
+    const start = useSharedValue({ x: 0, y: 0 });
+
+    const animatedStyless = useAnimatedStyle(() => ({
+        transform: [
+            { translateX: offset.value.x },
+            { translateY: offset.value.y },
+            { scale: withSpring(isPressed.value ? 1.2 : 1) }
+        ],
+        backgroundColor: isPressed.value ? 'yellow' : 'green'
+    }));
+
+    const gesture = Gesture.Pan().onBegin(() => {
+        isPressed.value = true;
+    }).onUpdate(e => {
+        offset.value = {
+            x: e.translationX + start.value.x,
+            y: e.translationY + start.value.y
+        }
+    }).onEnd(() => {
+        // start.value = {
+        //     x: offset.value.x,
+        //     y: offset.value.y
+        // }
+        offset.value = withSpring({
+            x: 0,
+            y: 0
+        })
+    }).onFinalize(() => {
+        isPressed.value = false;
+    });
+
+    return (
+        <GestureDetector gesture={gesture}>
+            <Animated.View style={[styles.ball, animatedStyless]} />
+        </GestureDetector>
+    )
+}
+
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
+        backgroundColor: 'orange',
         alignItems: 'center',
         fontSize: 20
+    },
+
+    ball: {
+        width: 100,
+        height: 100,
+        borderRadius: 100,
+        backgroundColor: 'blue',
+        alignSelf: 'center',
     },
 })
