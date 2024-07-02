@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
 
 import Animated, { useSharedValue, withSpring, withTiming, useAnimatedStyle, Easing, useAnimatedProps } from 'react-native-reanimated';
 import { Circle, Svg } from 'react-native-svg';
@@ -24,7 +24,7 @@ export default function AnimationTest() {
     }));
 
     return (
-        <View style={styles.container}>
+        <GestureHandlerRootView style={styles.container}>
             <Animated.View style={[
                 {
                     width: animW,
@@ -62,50 +62,73 @@ export default function AnimationTest() {
             <Svg>
                 <AnimatedCircle cx="50" cy="50" r={radius} fill="blue" animatedProps={animatedProps} />
             </Svg>
-        </View>
+        </GestureHandlerRootView>
     )
 }
 
 
+const buttonWidth = 250;
+const circleWidth = 50;
+const defaultXTranslation = 5;
+const calculatedValue = buttonWidth - circleWidth - defaultXTranslation;
+
 const Ball = () => {
 
-    const isPressed = useSharedValue(false);
-    const offset = useSharedValue({ x: 0, y: 0 });
-    const start = useSharedValue({ x: 0, y: 0 });
+    const offset = useSharedValue(defaultXTranslation);
+    const checker = useSharedValue(false);
+
+    const gesture = Gesture.Pan().onBegin(() => {
+
+    }).onUpdate(e => {
+
+        // this "if" check to move circle only within the button area
+
+        if (
+            checker.value === false &&
+            offset.value < calculatedValue
+            && e.translationX < calculatedValue
+            && e.translationX > -1
+        ) {
+
+            offset.value = e.translationX;
+
+        } else {
+            // offset.value = calculatedValue + e.translationX;
+        }
+
+    }).onEnd(e => {
+
+        if (offset.value > (calculatedValue / 2)) {
+            offset.value = withSpring(calculatedValue);
+            checker.value = true;
+        } else {
+            offset.value = withSpring(defaultXTranslation);
+            checker.value = false;
+        }
+
+    }).onFinalize(() => {
+
+    });
 
     const animatedStyless = useAnimatedStyle(() => ({
         transform: [
-            { translateX: offset.value.x },
-            { translateY: offset.value.y },
-            { scale: withSpring(isPressed.value ? 1.2 : 1) }
-        ],
-        backgroundColor: isPressed.value ? 'yellow' : 'green'
+            { translateX: offset.value }
+        ]
     }));
 
-    const gesture = Gesture.Pan().onBegin(() => {
-        isPressed.value = true;
-    }).onUpdate(e => {
-        offset.value = {
-            x: e.translationX + start.value.x,
-            y: e.translationY + start.value.y
-        }
-    }).onEnd(() => {
-        // start.value = {
-        //     x: offset.value.x,
-        //     y: offset.value.y
-        // }
-        offset.value = withSpring({
-            x: 0,
-            y: 0
-        })
-    }).onFinalize(() => {
-        isPressed.value = false;
-    });
-
     return (
-        <GestureDetector gesture={gesture}>
-            <Animated.View style={[styles.ball, animatedStyless]} />
-        </GestureDetector>
+        <View style={{
+            width: buttonWidth,
+            height: 55,
+            backgroundColor: '#fff',
+            flexDirection: 'row',
+            alignItems: 'center',
+            borderRadius: 27.5
+        }}>
+            <GestureDetector gesture={gesture}>
+                <Animated.View style={[styles.ball, animatedStyless]} />
+            </GestureDetector>
+        </View>
     )
 }
 
@@ -121,10 +144,10 @@ const styles = StyleSheet.create({
     },
 
     ball: {
-        width: 100,
-        height: 100,
-        borderRadius: 100,
-        backgroundColor: 'blue',
-        alignSelf: 'center',
+        width: circleWidth,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: 'green',
+        cursor: 'pointer'
     },
 })
