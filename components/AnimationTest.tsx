@@ -84,16 +84,22 @@ const Ball = () => {
         // this "if" check to move circle only within the button area
 
         if (
-            checker.value === false &&
-            offset.value < calculatedValue
+            checker.value === false 
             && e.translationX < calculatedValue
-            && e.translationX > -1
+            && e.translationX > 0
         ) {
 
             offset.value = e.translationX;
 
         } else {
-            // offset.value = calculatedValue + e.translationX;
+            if (
+                checker.value === true
+                && e.translationX < 1
+                && e.translationX > -calculatedValue
+            ) {
+                offset.value = calculatedValue + e.translationX;
+                console.log(e.translationX)
+            }
         }
 
     }).onEnd(e => {
