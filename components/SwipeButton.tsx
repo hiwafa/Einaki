@@ -17,7 +17,7 @@ export default function SwipeButton() {
 }
 
 
-const buttonWidth = 250;
+export const buttonWidth = 200;
 export const circleWidth = 50;
 const defaultXTranslation = 5;
 const calculatedValue = buttonWidth - circleWidth - defaultXTranslation;
@@ -75,14 +75,7 @@ const Swiping = () => {
     }));
 
     return (
-        <View style={{
-            width: buttonWidth,
-            height: 55,
-            backgroundColor: '#fff',
-            flexDirection: 'row',
-            alignItems: 'center',
-            borderRadius: 27.5
-        }}>
+        <View style={styles.swipeBallContainer}>
             <GestureDetector gesture={gesture}>
                 <Animated.View style={[styles.swipeBall, animatedStyless]} />
             </GestureDetector>

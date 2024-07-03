@@ -1,9 +1,11 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 const { height } = Dimensions.get('window');
-import { circleWidth } from "../components/SwipeButton";
+import { circleWidth, buttonWidth } from "../components/SwipeButton";
 
 export const lightStyles = StyleSheet.create({
+
+    // main index style
     mainContainer: {
         margin: 0,
         padding: 0,
@@ -14,11 +16,11 @@ export const lightStyles = StyleSheet.create({
     mainHeader: {
         height: 70,
         width: '100%',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 3.5 },
-        shadowOpacity: 0.1,
-        shadowRadius: 1.1,
-        elevation: 1,
+        // shadowColor: '#000',
+        // shadowOffset: { width: 0, height: 3.5 },
+        // shadowOpacity: 0.1,
+        // shadowRadius: 1.1,
+        // elevation: 1,
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
@@ -38,22 +40,32 @@ export const lightStyles = StyleSheet.create({
         marginVertical: 10,
         color: '#191919'
     },
+    // main index style
+
 
     // swipe styles
     swipeContainer: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: 'green',
+        // backgroundColor: '#55AD9B',
         alignItems: 'center',
         fontSize: 20
     },
     swipeBall: {
         width: circleWidth,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: 'green',
+        height: circleWidth,
+        borderRadius: circleWidth/2,
+        backgroundColor: '#F6F5F2',
         cursor: 'pointer'
     },
+    swipeBallContainer: {
+        width: buttonWidth,
+        height: circleWidth + 5,
+        backgroundColor: '#55AD9B',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: (circleWidth + 5)/2
+    }
     // swipe styles
 });
 
