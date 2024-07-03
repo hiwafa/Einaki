@@ -3,6 +3,10 @@ import { StyleSheet, Dimensions } from "react-native";
 const { height } = Dimensions.get('window');
 import { circleWidth, buttonWidth } from "../components/SwipeButton";
 
+const lightPrimaryBackColor = "#F6F5F2";
+const lightPrimaryColor = "#191919";
+const lightPrimarySpecificColor = "orange"
+
 export const lightStyles = StyleSheet.create({
 
     // main index style
@@ -10,21 +14,22 @@ export const lightStyles = StyleSheet.create({
         margin: 0,
         padding: 0,
         flex: 1,
-        color: '#191919',
-        backgroundColor: '#F6F5F2',
+        color: lightPrimaryColor,
+        backgroundColor: lightPrimaryBackColor,
     },
     mainHeader: {
         height: 70,
         width: '100%',
-        // shadowColor: '#000',
-        // shadowOffset: { width: 0, height: 3.5 },
-        // shadowOpacity: 0.1,
-        // shadowRadius: 1.1,
-        // elevation: 1,
+        shadowColor: 'orange',
+        shadowOffset: { width: 0, height: 3.5 },
+        shadowOpacity: 2.1,
+        shadowRadius: 1.75,
+        elevation: 1,
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        backgroundColor: lightPrimarySpecificColor
     },
     overflowContainer: {
         height: height - 70,
@@ -38,7 +43,7 @@ export const lightStyles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginVertical: 10,
-        color: '#191919'
+        color: lightPrimaryColor
     },
     // main index style
 
@@ -47,7 +52,7 @@ export const lightStyles = StyleSheet.create({
     swipeContainer: {
         flex: 1,
         justifyContent: 'center',
-        // backgroundColor: '#55AD9B',
+        // backgroundColor: 'orange',
         alignItems: 'center',
         fontSize: 20
     },
@@ -55,13 +60,13 @@ export const lightStyles = StyleSheet.create({
         width: circleWidth,
         height: circleWidth,
         borderRadius: circleWidth/2,
-        backgroundColor: '#F6F5F2',
+        backgroundColor: lightPrimarySpecificColor,
         cursor: 'pointer'
     },
     swipeBallContainer: {
         width: buttonWidth,
         height: circleWidth + 5,
-        backgroundColor: '#55AD9B',
+        backgroundColor: lightPrimaryBackColor,
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: (circleWidth + 5)/2

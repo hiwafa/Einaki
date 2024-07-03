@@ -17,8 +17,8 @@ export default function SwipeButton() {
 }
 
 
-export const buttonWidth = 200;
-export const circleWidth = 50;
+export const buttonWidth = 150;
+export const circleWidth = 30;
 const defaultXTranslation = 5;
 const calculatedValue = buttonWidth - circleWidth - defaultXTranslation;
 
