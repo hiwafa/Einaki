@@ -6,6 +6,7 @@ import { Link } from "expo-router";
 import { lightStyles, darkStyles } from "./styles";
 import SwipeButton from "../components/SwipeButton";
 import AudioSlider from "../components/AudioSlider";
+import AudioPlayer from "../components/AudioPlayer";
 
 export interface EmptyProps { }
 
@@ -13,24 +14,21 @@ export default function RootApp({ }: EmptyProps) {
 
     const theme = "light";
     const styles = theme === "light" ? lightStyles : darkStyles;
-    
+
     return (
         <View style={styles.mainContainer}>
             <View style={styles.mainHeader}>
-                <View style={{ marginHorizontal: 20}}>
+                <View style={{ marginHorizontal: 20 }}>
                     <SwipeButton />
                 </View>
-                <View style={{flex: 1, marginHorizontal: 20}}>
-                    <AudioSlider />
+                <View style={{ flex: 1, marginHorizontal: 20 }}>
+                    {/* <AudioSlider /> */}
                 </View>
             </View>
             <View style={styles.overflowContainer}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
-                    {Array.from({ length: 50 }, (_, index) => (
-                        <Text key={index} style={styles.text}>
-                            {index + 1} Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos eum laboriosam delectus aut officia omnis, vitae alias eligendi unde quia esse vel beatae atque eveniet! Fuga officia fugit quaerat veritatis.
-                        </Text>
-                    ))}
+                    <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus cupiditate esse est eaque saepe, itaque accusamus ab sed maxime perspiciatis et vel ad reiciendis. Fugiat temporibus dignissimos asperiores quos cumque.</Text>
+                    <AudioPlayer />
                 </ScrollView>
             </View>
         </View>

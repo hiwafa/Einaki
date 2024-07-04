@@ -34,6 +34,7 @@ export const lightStyles = StyleSheet.create({
     overflowContainer: {
         height: height - 70,
         width: '100%',
+        paddingTop: 20,
         paddingHorizontal: 20
     },
     scrollView: {
