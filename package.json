@@ -23,7 +23,9 @@
     "react-native-reanimated": "~3.10.1",
     "expo-image": "~1.12.12",
     "expo-asset": "~10.0.9",
-    "react-native-svg": "15.2.0"
+    "react-native-svg": "15.2.0",
+    "@react-native-community/slider": "4.5.2",
+    "expo-av": "~14.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

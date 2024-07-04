@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions } from "react-native";
 const { height } = Dimensions.get('window');
 import { circleWidth, buttonWidth } from "../components/SwipeButton";
 
-const lightPrimaryBackColor = "#F6F5F2";
+export const lightPrimaryBackColor = "#F6F5F2";
 const lightPrimaryColor = "#191919";
 const lightPrimarySpecificColor = "orange"
 
@@ -61,7 +61,9 @@ export const lightStyles = StyleSheet.create({
         height: circleWidth,
         borderRadius: circleWidth/2,
         backgroundColor: lightPrimarySpecificColor,
-        cursor: 'pointer'
+        cursor: 'pointer',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     swipeBallContainer: {
         width: buttonWidth,
@@ -70,6 +72,9 @@ export const lightStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: (circleWidth + 5)/2
+    },
+    animatedSwipeText: {
+        // paddingLeft: 10
     }
     // swipe styles
 });

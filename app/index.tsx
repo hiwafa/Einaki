@@ -5,6 +5,7 @@ import { Link } from "expo-router";
 
 import { lightStyles, darkStyles } from "./styles";
 import SwipeButton from "../components/SwipeButton";
+import AudioSlider from "../components/AudioSlider";
 
 export interface EmptyProps { }
 
@@ -20,7 +21,7 @@ export default function RootApp({ }: EmptyProps) {
                     <SwipeButton />
                 </View>
                 <View style={{flex: 1, marginHorizontal: 20}}>
-                    <Text>3333</Text>
+                    <AudioSlider />
                 </View>
             </View>
             <View style={styles.overflowContainer}>
