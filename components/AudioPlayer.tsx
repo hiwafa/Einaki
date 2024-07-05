@@ -4,6 +4,7 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
 
+let pointer = -1;
 const AudioPlayer = () => {
 
   const [sound, setSound] = useState(null);
@@ -11,8 +12,6 @@ const AudioPlayer = () => {
   const [duration, setDuration] = useState(0);
   const [position, setPosition] = useState(0);
   const [volume, setVolume] = useState(0.7);
-
-  const soundRef = useRef(null);
 
   useEffect(() => {
     return () => {
@@ -23,28 +22,38 @@ const AudioPlayer = () => {
 
   const loadSound = async () => {
 
-    const { sound } = await Audio.Sound.createAsync(
-      require('../assets/audios/sample.mp3'),
-      {
-        shouldPlay: true, // Automatically start playing the sound
-        // volume: 0.5,      // Set initial volume to 50%
-        // isLooping: false, // Do not loop the sound
-        // rate: 1.0,        // Play at normal speed
-        // positionMillis: 0 // Start from the beginning
-      },
-      (status) => {
-        if (status.isLoaded) {
-          console.log("$$$$$$slide change::::: ");
-          setDuration(status.durationMillis);
-          setPosition(status.positionMillis);
-          setIsPlaying(status.isPlaying);
-          setVolume(status.volume)
+    try {
+      const { sound } = await Audio.Sound.createAsync(
+        require('../assets/audios/sample.mp3'),
+        {
+          shouldPlay: true, // Automatically start playing the sound
+          // volume: 0.5,      // Set initial volume to 50%
+          // isLooping: false, // Do not loop the sound
+          // rate: 1.0,        // Play at normal speed
+          // positionMillis: 0 // Start from the beginning
+        },
+        (status) => {
+          if (status.isLoaded) {
+  
+            if (pointer < 0) {
+              console.log("$$$$$$slide change::::: ");
+              setDuration(status.durationMillis);
+              // setIsPlaying(status.isPlaying);
+              setVolume(status.volume);
+              pointer++;
+            }
+  
+            setPosition(status.positionMillis);
+  
+          }
         }
-      }
-    );
-
-    setSound(sound);
-    soundRef.current = sound;
+      );
+  
+      setSound(sound);
+      setIsPlaying(true);
+    } catch (err) {
+      
+    }
 
   }
 
@@ -53,8 +62,10 @@ const AudioPlayer = () => {
     if (sound) {
       if (isPlaying) {
         await sound.pauseAsync();
+        setIsPlaying(false);
       } else {
         await sound.playAsync();
+        setIsPlaying(true);
       }
     } else {
       loadSound();
@@ -79,7 +90,7 @@ const AudioPlayer = () => {
       <Button title={isPlaying ? 'Pause' : 'Play'} onPress={handlePlayPause} />
       <Slider
         style={styles.slider}
-        value={position} 
+        value={position}
         minimumValue={0}
         maximumValue={duration}
         onValueChange={handleSliderChange}
