@@ -5,39 +5,49 @@ import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
 
 const AudioPlayer = () => {
+
   const [sound, setSound] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [position, setPosition] = useState(0);
-  const [volume, setVolume] = useState(1.0);
+  const [volume, setVolume] = useState(0.7);
 
   const soundRef = useRef(null);
 
   useEffect(() => {
     return () => {
-      if (sound) {
-        sound.unloadAsync();
-      }
+      if (sound) sound.unloadAsync();
     };
+
   }, [sound]);
 
   const loadSound = async () => {
+
     const { sound } = await Audio.Sound.createAsync(
       require('../assets/audios/sample.mp3'),
-      { shouldPlay: true },
-      onPlaybackStatusUpdate
+      {
+        shouldPlay: true, // Automatically start playing the sound
+        // volume: 0.5,      // Set initial volume to 50%
+        // isLooping: false, // Do not loop the sound
+        // rate: 1.0,        // Play at normal speed
+        // positionMillis: 0 // Start from the beginning
+      },
+      (status) => {
+        if (status.isLoaded) {
+          console.log("$$$$$$slide change::::: ");
+          setDuration(status.durationMillis);
+          setPosition(status.positionMillis);
+          setIsPlaying(status.isPlaying);
+          setVolume(status.volume)
+        }
+      }
     );
+
     setSound(sound);
     soundRef.current = sound;
-  };
 
-  const onPlaybackStatusUpdate = (status) => {
-    if (status.isLoaded) {
-      setDuration(status.durationMillis);
-      setPosition(status.positionMillis);
-      setIsPlaying(status.isPlaying);
-    }
-  };
+  }
+
 
   const handlePlayPause = async () => {
     if (sound) {
@@ -49,13 +59,13 @@ const AudioPlayer = () => {
     } else {
       loadSound();
     }
-  };
+  }
 
   const handleSliderChange = async (value) => {
-    if (sound) {
+    if (sound && value) {
       await sound.setPositionAsync(value);
     }
-  };
+  }
 
   const handleVolumeChange = async (value) => {
     setVolume(value);
@@ -69,22 +79,22 @@ const AudioPlayer = () => {
       <Button title={isPlaying ? 'Pause' : 'Play'} onPress={handlePlayPause} />
       <Slider
         style={styles.slider}
-        value={position}
+        value={position} 
         minimumValue={0}
         maximumValue={duration}
         onValueChange={handleSliderChange}
       />
       <Text>
-        {new Date(position).toISOString().substr(14, 5)} / {new Date(duration).toISOString().substr(14, 5)}
+        {new Date(position).toISOString().substring(14, 19)} / {new Date(duration).toISOString().substring(14, 19)}
       </Text>
       <Text>Volume</Text>
-      <Slider
+      {/* <Slider
         style={styles.slider}
         value={volume}
         minimumValue={0}
         maximumValue={1}
         onValueChange={handleVolumeChange}
-      />
+      /> */}
     </View>
   );
 };
