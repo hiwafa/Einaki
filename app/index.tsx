@@ -22,7 +22,7 @@ export default function RootApp({ }: EmptyProps) {
                     <SwipeButton />
                 </View>
                 <View style={{ flex: 1, marginHorizontal: 20 }}>
-                    {/* <AudioSlider /> */}
+                    <AudioPlayer />
                 </View>
             </View>
             <View style={styles.overflowContainer}>

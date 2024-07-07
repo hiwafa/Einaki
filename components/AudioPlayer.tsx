@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 let pointer = -1;
 const AudioPlayer = () => {
@@ -34,25 +35,24 @@ const AudioPlayer = () => {
         },
         (status) => {
           if (status.isLoaded) {
-  
+
             if (pointer < 0) {
-              console.log("$$$$$$slide change::::: ");
               setDuration(status.durationMillis);
               // setIsPlaying(status.isPlaying);
               setVolume(status.volume);
               pointer++;
             }
-  
+
             setPosition(status.positionMillis);
-  
+
           }
         }
       );
-  
+
       setSound(sound);
       setIsPlaying(true);
     } catch (err) {
-      
+
     }
 
   }
@@ -87,18 +87,23 @@ const AudioPlayer = () => {
 
   return (
     <View style={styles.container}>
-      <Button title={isPlaying ? 'Pause' : 'Play'} onPress={handlePlayPause} />
-      <Slider
-        style={styles.slider}
-        value={position}
-        minimumValue={0}
-        maximumValue={duration}
-        onValueChange={handleSliderChange}
-      />
-      <Text>
-        {new Date(position).toISOString().substring(14, 19)} / {new Date(duration).toISOString().substring(14, 19)}
-      </Text>
-      <Text>Volume</Text>
+
+      <View style={styles.sliderContainer}>
+        <Slider
+          style={styles.slider}
+          value={position}
+          minimumValue={0}
+          maximumValue={duration}
+          onValueChange={handleSliderChange}
+        />
+        <FontAwesome5 style={styles.playIcon} name={isPlaying ? 'pause' : 'play'} size={18} onPress={handlePlayPause} />
+      </View>
+
+      <View style={styles.durationConainer}>
+        <Text style={styles.duration}>{new Date(position).toISOString().substring(14, 19)}</Text>
+        <Text style={styles.duration}>{new Date(duration).toISOString().substring(14, 19)}</Text>
+      </View>
+
       {/* <Slider
         style={styles.slider}
         value={volume}
@@ -112,14 +117,34 @@ const AudioPlayer = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // flex: 1,
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // backgroundColor: 'green'
+
+  },
+  sliderContainer: {
+    flexDirection: 'row'
   },
   slider: {
-    width: 300,
-    height: 40,
+    flex: 1,
+    minWidth: 200,
+    alignSelf: 'center'
   },
+  duration: {
+    fontSize: 13,
+    marginHorizontal: 30
+  },
+  playIcon: {
+    alignSelf: 'center',
+    marginHorizontal: 5,
+    cursor: 'pointer'
+  },
+  durationConainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  }
 });
 
 export default AudioPlayer;
