@@ -15,8 +15,10 @@ const initialAudio = {
 }
 const audioReducer = (state, { type, value }) => {
   switch (type) {
+    case "replace":
+      return value;
     case "allExceptAudio":
-      return {...state, ...value};
+      return {audioFile: state.audioFile, ...value};
     case "audioFile":
       return { ...state, [type]: value }
     default: return state;
@@ -120,7 +122,7 @@ const AudioPlayer = () => {
     // } else {
     //   loadSound();
     // }
-    if (audio.audioFile && audio.length > 0) {
+    if (audio.audioFile) {
       try {
         if (audio.played) {
           await audio.audioFile.pauseAsync();
@@ -152,6 +154,26 @@ const AudioPlayer = () => {
     }
   }
 
+  const handleBackward = async ()=> {
+    if (audio.audioFile) {
+      try {
+        await audio.audioFile.setPositionAsync(audio.location-5000);
+      } catch (err) {
+        console.log("handleBackward: ", err)
+      }
+    }
+  }
+  
+  const handleForward = async ()=> {
+    if (audio.audioFile) {
+      try {
+        await audio.audioFile.setPositionAsync(audio.location+5000);
+      } catch (err) {
+        console.log("handleForward: ", err)
+      }
+    }
+  }
+
   const handleVolumeChange = async (value) => {
     // setVolume(value);
     // if (sound) {
@@ -176,9 +198,9 @@ const AudioPlayer = () => {
           maximumValue={audio.length}
           onValueChange={handleSliderChange}
         />
-        <FontAwesome5 style={styles.playIcon} name="backward" size={18} color="black" />
+        <FontAwesome5 style={styles.playIcon} name="backward" size={18} color="black" onPress={handleBackward} />
         <FontAwesome5 style={styles.playIcon} name={audio.played ? 'pause' : 'play'} size={18} onPress={handlePlayPause} />
-        <FontAwesome5 style={styles.playIcon} name="forward" size={18} color="black" />
+        <FontAwesome5 style={styles.playIcon} name="forward" size={18} color="black" onPress={handleForward} />
       </View>
 
       {/* <View style={styles.durationConainer}>
