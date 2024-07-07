@@ -27,20 +27,8 @@ const audioReducer = (state, { type, value }) => {
 
 const AudioPlayer = () => {
 
-  const [sound, setSound] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [duration, setDuration] = useState(0);
-  const [position, setPosition] = useState(0);
-  const [volume, setVolume] = useState(0.7);
-
   const [audio, setAudio] = useReducer(audioReducer, initialAudio);
 
-  // useEffect(() => {
-  //   return () => {
-  //     if (sound) sound.unloadAsync();
-  //   };
-
-  // }, [sound]);
 
   useEffect(() => {
     return () => {
@@ -69,16 +57,6 @@ const AudioPlayer = () => {
         },
         (status) => {
           if (status.isLoaded) {
-
-            // if (pointer < 0) {
-            //   setDuration(status.durationMillis);
-            //   // setIsPlaying(status.isPlaying);
-            //   setVolume(status.volume);
-            //   pointer++;
-            // }
-
-            // setPosition(status.positionMillis);
-
             setAudio({
               type: 'allExceptAudio', value: {
                 location: status.positionMillis,
@@ -87,14 +65,10 @@ const AudioPlayer = () => {
                 loudness: status.volume
               }
             });
-
           }
         }
       );
-
-      // setSound(sound);
-      // setIsPlaying(true);
-
+      
       setAudio({
         type: "audioFile",
         value: sound
@@ -107,21 +81,6 @@ const AudioPlayer = () => {
   }
 
   const handlePlayPause = async () => {
-    // if (sound && position > 0) {
-    //   try {
-    //     if (isPlaying) {
-    //       await sound.pauseAsync();
-    //       setIsPlaying(false);
-    //     } else {
-    //       await sound.playAsync();
-    //       setIsPlaying(true);
-    //     }
-    //   } catch (err) {
-    //     console.log("handlePlayPause: ", err)
-    //   }
-    // } else {
-    //   loadSound();
-    // }
     if (audio.audioFile) {
       try {
         if (audio.played) {
@@ -138,13 +97,6 @@ const AudioPlayer = () => {
   }
 
   const handleSliderChange = async (value) => {
-    // if (sound && value) {
-    //   try {
-    //     await sound.setPositionAsync(value);
-    //   } catch (err) {
-    //     console.log("handleSliderChange: ", err)
-    //   }
-    // }
     if (audio.audioFile && value) {
       try {
         await audio.audioFile.setPositionAsync(value);
@@ -184,13 +136,6 @@ const AudioPlayer = () => {
   return (
     <>
       <View style={styles.sliderContainer}>
-        {/* <Slider
-          style={styles.slider}
-          value={position}
-          minimumValue={0}
-          maximumValue={duration}
-          onValueChange={handleSliderChange}
-        /> */}
         <Slider
           style={styles.slider}
           value={audio.location}
@@ -203,13 +148,9 @@ const AudioPlayer = () => {
         <FontAwesome5 style={styles.playIcon} name="forward" size={18} color="black" onPress={handleForward} />
       </View>
 
-      {/* <View style={styles.durationConainer}>
-        <Text style={styles.duration}>{new Date(position).toISOString().substring(14, 19)}</Text>
-        <Text style={styles.duration}>{new Date(duration).toISOString().substring(14, 19)}</Text>
-      </View> */}
       <View style={styles.durationConainer}>
         <Text style={styles.duration}>{new Date(audio.location).toISOString().substring(14, 19)}</Text>
-        <Text style={styles.duration}>{new Date(audio.location).toISOString().substring(14, 19)}</Text>
+        <Text style={styles.duration}>{new Date(audio.length).toISOString().substring(14, 19)}</Text>
       </View>
 
       {/* <Slider
