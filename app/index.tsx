@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, ScrollView, Dimensions } from "react-native";
+import { View, SafeAreaView, Text, ScrollView, Dimensions, Platform } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Link } from "expo-router";
 
@@ -7,6 +7,8 @@ import { lightStyles, darkStyles } from "./styles";
 import SwipeButton from "../components/SwipeButton";
 import AudioSlider from "../components/AudioSlider";
 import AudioPlayer from "../components/AudioPlayer";
+
+import Slider from '@react-native-community/slider';
 
 export interface EmptyProps { }
 
@@ -18,11 +20,11 @@ export default function RootApp({ }: EmptyProps) {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.mainHeader}>
-                <View style={{ marginHorizontal: 20 }}>
+                <View style={{ marginHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 40 : 0 }}>
                     <SwipeButton />
                 </View>
-                <View style={{ flex: 1, marginHorizontal: 20 }}>
-                    <AudioPlayer />
+                <View style={{ flex: 1, marginHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 50 : 0 }}>
+                    
                 </View>
             </View>
             <View style={styles.overflowContainer}>

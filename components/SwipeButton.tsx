@@ -1,11 +1,12 @@
+import { useState } from "react";
 import { View, Text } from "react-native";
 import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated, { useSharedValue, withSpring, useAnimatedStyle } from "react-native-reanimated";
 import { FontAwesome6 } from '@expo/vector-icons';
 
 import { lightStyles, darkStyles, lightPrimaryBackColor } from "../app/styles";
-import { useState } from "react";
 
+import { buttonWidth, circleWidth } from "../app/utils/Constants";
 
 export default function SwipeButton() {
 
@@ -19,15 +20,10 @@ export default function SwipeButton() {
     )
 }
 
-
-export const buttonWidth = 150;
-export const circleWidth = 30;
 const defaultXTranslation = 5;
 const calculatedValue = buttonWidth - circleWidth - defaultXTranslation;
 
 const Swiping = () => {
-
-    console.log("Swipe button is rendering")
 
     const theme = "light";
     const styles = theme === "light" ? lightStyles : darkStyles;
@@ -35,7 +31,6 @@ const Swiping = () => {
     const offset = useSharedValue(defaultXTranslation);
     const checker = useSharedValue(false);
     const onSwipe = useSharedValue(false);
-    const [toSetting, setToSetting] = useState(false);
 
     const gesture = Gesture.Pan().onBegin(() => {
         onSwipe.value = true;
@@ -66,21 +61,19 @@ const Swiping = () => {
         if (offset.value > (calculatedValue / 2)) {
             offset.value = withSpring(calculatedValue);
             checker.value = true;
-            setToSetting(true)
         } else {
             offset.value = withSpring(defaultXTranslation);
             checker.value = false;
-            setToSetting(false)
         }
-
+ 
     }).onFinalize(() => {
         onSwipe.value = false;
     });
 
     const animatedStyless = useAnimatedStyle(() => ({
         transform: [
-            { translateX: offset.value },
-            {rotate: withSpring(checker.value === false ? "0deg" : "-180deg") }
+            {translateX: offset.value},
+            {rotate: withSpring(checker.value === false ? '0deg' : '-180deg')}
         ]
     }));
 
@@ -88,8 +81,6 @@ const Swiping = () => {
         opacity: withSpring(onSwipe.value === true ? 0 : 1),
         marginLeft: withSpring(checker.value === false ? 15 : -15)
     }))
-
-   
 
     return (
         <View style={styles.swipeBallContainer}>
@@ -99,7 +90,7 @@ const Swiping = () => {
                 </Animated.View>
             </GestureDetector>
             <Animated.Text style={[styles.animatedSwipeText, animatedTextStyle]}>
-                {toSetting === false ? "Go to Settings" : "Go to Home"}
+                {checker.value === false ? "Go to Settings" : "Go to Home"}
             </Animated.Text>
         </View>
     )

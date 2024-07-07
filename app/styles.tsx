@@ -1,11 +1,12 @@
 import React from "react";
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 const { height } = Dimensions.get('window');
-import { circleWidth, buttonWidth } from "../components/SwipeButton";
+import { circleWidth, buttonWidth } from "./utils/Constants";
 
 export const lightPrimaryBackColor = "#F6F5F2";
 const lightPrimaryColor = "#191919";
 const lightPrimarySpecificColor = "orange"
+const headerHeight = Platform.OS === 'ios' ? 90 : 70;
 
 export const lightStyles = StyleSheet.create({
 
@@ -18,9 +19,9 @@ export const lightStyles = StyleSheet.create({
         backgroundColor: lightPrimaryBackColor,
     },
     mainHeader: {
-        height: 70,
+        height: headerHeight,
         width: '100%',
-        shadowColor: 'orange',
+        shadowColor: lightPrimarySpecificColor,
         shadowOffset: { width: 0, height: 3.5 },
         shadowOpacity: 2.1,
         shadowRadius: 1.75,
@@ -32,7 +33,7 @@ export const lightStyles = StyleSheet.create({
         backgroundColor: lightPrimarySpecificColor
     },
     overflowContainer: {
-        height: height - 70,
+        height: height - headerHeight,
         width: '100%',
         paddingTop: 20,
         paddingHorizontal: 20
