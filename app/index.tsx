@@ -23,14 +23,14 @@ export default function RootApp({ }: EmptyProps) {
                 <View style={{ marginHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 40 : 0 }}>
                     <SwipeButton />
                 </View>
-                <View style={{ flex: 1, marginHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 50 : 0 }}>
-                    
+                <View style={{ flex: 1, marginHorizontal: 10, paddingTop: Platform.OS === 'ios' ? 55 : 0 }}>
+                    <AudioPlayer />
                 </View>
             </View>
             <View style={styles.overflowContainer}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
                     <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus cupiditate esse est eaque saepe, itaque accusamus ab sed maxime perspiciatis et vel ad reiciendis. Fugiat temporibus dignissimos asperiores quos cumque.</Text>
-                    <AudioPlayer />
+
                 </ScrollView>
             </View>
         </View>

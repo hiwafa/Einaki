@@ -130,7 +130,7 @@ const AudioPlayer = () => {
   const handleForward = async () => {
     if (audio.audioFile) {
       try {
-        await audio.audioFile.setPositionAsync(audio.location + 50000);
+        await audio.audioFile.setPositionAsync(audio.location + 5000);
       } catch (err) {
         console.log("handleForward: ", err)
       }
@@ -175,7 +175,7 @@ const AudioPlayer = () => {
       </View>
 
       <View style={styles.durationConainer}>
-        <Text style={styles.duration}>{new Date(audio.location).toISOString().substring(14, 19)}</Text>
+        <Text style={styles.duration}>{new Date(audio.location).toISOString().substring(14, 19)} / </Text>
         <Text style={styles.duration}>{new Date(audio.length).toISOString().substring(14, 19)}</Text>
       </View>
 
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   duration: {
     fontSize: 13,
     // marginHorizontal: 30,
-    // marginRight: 92
+    // marginRight: 100
   },
   playIcon: {
     alignSelf: 'center',
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   },
   durationConainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    // justifyContent: 'space-between'
   }
 });
 
