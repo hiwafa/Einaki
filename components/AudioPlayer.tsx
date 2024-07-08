@@ -5,7 +5,6 @@ import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-let pointer = -1;
 const initialAudio = {
   audioFile: null,
   location: 0,
@@ -13,12 +12,13 @@ const initialAudio = {
   played: false,
   loudness: 0.7
 }
+
 const audioReducer = (state, { type, value }) => {
   switch (type) {
     case "replace":
       return value;
     case "allExceptAudio":
-      return {audioFile: state.audioFile, ...value};
+      return { ...value, audioFile: state.audioFile };
     case "audioFile":
       return { ...state, [type]: value }
     default: return state;
@@ -29,7 +29,6 @@ const AudioPlayer = () => {
 
   const [audio, setAudio] = useReducer(audioReducer, initialAudio);
 
-
   useEffect(() => {
     return () => {
       if (audio.audioFile) audio.audioFile.unloadAsync();
@@ -37,11 +36,17 @@ const AudioPlayer = () => {
 
   }, [audio.audioFile]);
 
-  // if (position > 0 && position === duration) {
-  //   pointer = -1;
-  //   setIsPlaying(false);
-  //   setPosition(0);
-  // }
+  if(audio.location > 1 && audio.location  === audio.length){
+    setAudio({
+      type: "allExceptAudio",
+      value: {
+        location: 1,
+        length: 0,
+        played: false,
+        loudness: 0.7
+      }
+    })
+  }
 
   const loadSound = async () => {
 
@@ -57,6 +62,10 @@ const AudioPlayer = () => {
         },
         (status) => {
           if (status.isLoaded) {
+
+            // if (status.didJustFinish && !status.isLooping) {
+            // }
+
             setAudio({
               type: 'allExceptAudio', value: {
                 location: status.positionMillis,
@@ -65,10 +74,11 @@ const AudioPlayer = () => {
                 loudness: status.volume
               }
             });
+
           }
         }
       );
-      
+
       setAudio({
         type: "audioFile",
         value: sound
@@ -86,6 +96,7 @@ const AudioPlayer = () => {
         if (audio.played) {
           await audio.audioFile.pauseAsync();
         } else {
+          console.log("Else Not Played Reloaded..................")
           await audio.audioFile.playAsync();
         }
       } catch (err) {
@@ -106,20 +117,20 @@ const AudioPlayer = () => {
     }
   }
 
-  const handleBackward = async ()=> {
+  const handleBackward = async () => {
     if (audio.audioFile) {
       try {
-        await audio.audioFile.setPositionAsync(audio.location-5000);
+        await audio.audioFile.setPositionAsync(audio.location - 5000);
       } catch (err) {
         console.log("handleBackward: ", err)
       }
     }
   }
-  
-  const handleForward = async ()=> {
+
+  const handleForward = async () => {
     if (audio.audioFile) {
       try {
-        await audio.audioFile.setPositionAsync(audio.location+5000);
+        await audio.audioFile.setPositionAsync(audio.location + 50000);
       } catch (err) {
         console.log("handleForward: ", err)
       }
@@ -127,22 +138,37 @@ const AudioPlayer = () => {
   }
 
   const handleVolumeChange = async (value) => {
-    // setVolume(value);
-    // if (sound) {
-    //   await sound.setVolumeAsync(value);
+    // if (audio.audioFile) { // increase volume
+    //   await audio.audioFile.setVolumeAsync(value);
     // }
   };
 
   return (
     <>
       <View style={styles.sliderContainer}>
-        <Slider
+
+        {/* <Slider
           style={styles.slider}
           value={audio.location}
           minimumValue={0}
           maximumValue={audio.length}
           onValueChange={handleSliderChange}
-        />
+        /> */}
+
+        <View style={{
+          flex: 1,
+          height: 10,
+          width: '100%',
+          alignSelf: 'center',
+          backgroundColor: 'green'
+        }}>
+          <View style={{
+            height: 10,
+            width: `${((audio.location / (audio.length === 0 ? 0.1 : audio.length)) * 100)}%`,
+            backgroundColor: 'red'
+          }}/>
+        </View>
+
         <FontAwesome5 style={styles.playIcon} name="backward" size={18} color="black" onPress={handleBackward} />
         <FontAwesome5 style={styles.playIcon} name={audio.played ? 'pause' : 'play'} size={18} onPress={handlePlayPause} />
         <FontAwesome5 style={styles.playIcon} name="forward" size={18} color="black" onPress={handleForward} />
