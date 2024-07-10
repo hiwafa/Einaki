@@ -39,7 +39,6 @@ const getTimeString = (seconds) => {
 const AudioPlayer = () => {
 
   const [audio, setAudio] = useReducer(audioReducer, initialAudio);
-  const [shouldSeek, setShouldSeek] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -52,7 +51,7 @@ const AudioPlayer = () => {
       type: "allExceptAudio",
       value: {
         location: 10,
-        length: (audio.length ? audio.length : 0) + 1,
+        length: audio.length + 1,
         played: audio.played,
         loudness: 0.7
       }
@@ -72,22 +71,21 @@ const AudioPlayer = () => {
           positionMillis: 0 // Start from the beginning
         },
         (status) => {
-          if (status.isLoaded) {
+          if (status.isLoaded && status.durationMillis && status.positionMillis) {
 
             // if (status.didJustFinish && !status.isLooping) {
             // }
 
-            console.log("durationMillis: ", status.durationMillis);
+              setAudio({
+                type: 'allExceptAudio', value: {
+                  location: status.positionMillis,
+                  length: status.durationMillis,
+                  played: status.isPlaying,
+                  loudness: status.volume
+                }
+              });
 
-
-            setAudio({
-              type: 'allExceptAudio', value: {
-                location: status.positionMillis + 1,
-                length: status.durationMillis + 1,
-                played: status.isPlaying,
-                loudness: status.volume
-              }
-            });
+            
 
           }
         }
@@ -152,11 +150,9 @@ const AudioPlayer = () => {
   }
 
   const handleSliderComplete = () => {
-    // setShouldSeek(false)
   }
 
   const handleSliderStart = () => {
-    // setShouldSeek(true)
   }
 
   const handleVolumeChange = async (value) => {
@@ -175,9 +171,9 @@ const AudioPlayer = () => {
             width: '100%',
             alignSelf: 'center',
           }}
-          value={audio.location ? audio.location : 0}
+          value={audio.location}
           minimumValue={0}
-          maximumValue={audio.length ? audio.length : 0}
+          maximumValue={audio.length}
           onValueChange={handleSliderChange}
           onSlidingStart={handleSliderStart}
           onSlidingComplete={handleSliderComplete}
@@ -203,8 +199,8 @@ const AudioPlayer = () => {
       </View>
 
       <View style={styles.durationConainer}>
-        <Text style={styles.duration}>{getTimeString((audio.location ? audio.location : 0) / 1000)} / </Text>
-        <Text style={styles.duration}>{getTimeString((audio.length ? audio.length : 0) / 1000)}</Text>
+        <Text style={styles.duration}>{getTimeString(audio.location / 1000)} / </Text>
+        <Text style={styles.duration}>{getTimeString( audio.length / 1000)}</Text>
       </View>
 
       {/* <Slider
