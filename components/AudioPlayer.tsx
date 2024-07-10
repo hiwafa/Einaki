@@ -7,8 +7,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 const initialAudio = {
   audioFile: null,
-  location: 0,
-  length: 0,
+  location: 1,
+  length: 1000,
   played: false,
   loudness: 0.7
 }
@@ -25,24 +25,35 @@ const audioReducer = (state, { type, value }) => {
   }
 }
 
+let h = 0, m = 0, s = 0;
+const getTimeString = (seconds) => {
+
+  h = parseInt(seconds / (60 * 60));
+  m = parseInt(seconds % (60 * 60) / 60);
+  s = parseInt(seconds % 60);
+
+  // return ((h < 10 ? '0' + h : h) + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s));
+  return (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+};
+
 const AudioPlayer = () => {
 
   const [audio, setAudio] = useReducer(audioReducer, initialAudio);
+  const [shouldSeek, setShouldSeek] = useState(false);
 
   useEffect(() => {
     return () => {
       if (audio.audioFile) audio.audioFile.unloadAsync();
     };
-
   }, [audio.audioFile]);
 
-  if(audio.location > 1 && audio.location  === audio.length){
+  if (audio.location > 10 && audio.location === audio.length) {
     setAudio({
       type: "allExceptAudio",
       value: {
-        location: 1,
-        length: 0,
-        played: false,
+        location: 10,
+        length: (audio.length ? audio.length : 0) + 1,
+        played: audio.played,
         loudness: 0.7
       }
     })
@@ -66,10 +77,13 @@ const AudioPlayer = () => {
             // if (status.didJustFinish && !status.isLooping) {
             // }
 
+            console.log("durationMillis: ", status.durationMillis);
+
+
             setAudio({
               type: 'allExceptAudio', value: {
-                location: status.positionMillis,
-                length: status.durationMillis,
+                location: status.positionMillis + 1,
+                length: status.durationMillis + 1,
                 played: status.isPlaying,
                 loudness: status.volume
               }
@@ -91,7 +105,7 @@ const AudioPlayer = () => {
   }
 
   const handlePlayPause = async () => {
-    if (audio.audioFile) {
+    if (audio.audioFile && audio.location > 10) {
       try {
         if (audio.played) {
           await audio.audioFile.pauseAsync();
@@ -130,11 +144,19 @@ const AudioPlayer = () => {
   const handleForward = async () => {
     if (audio.audioFile) {
       try {
-        await audio.audioFile.setPositionAsync(audio.location + 5000);
+        await audio.audioFile.setPositionAsync(audio.location + 50000);
       } catch (err) {
         console.log("handleForward: ", err)
       }
     }
+  }
+
+  const handleSliderComplete = () => {
+    // setShouldSeek(false)
+  }
+
+  const handleSliderStart = () => {
+    // setShouldSeek(true)
   }
 
   const handleVolumeChange = async (value) => {
@@ -147,15 +169,21 @@ const AudioPlayer = () => {
     <>
       <View style={styles.sliderContainer}>
 
-        {/* <Slider
-          style={styles.slider}
-          value={audio.location}
+        <Slider
+          style={{
+            flex: 1,
+            width: '100%',
+            alignSelf: 'center',
+          }}
+          value={audio.location ? audio.location : 0}
           minimumValue={0}
-          maximumValue={audio.length}
+          maximumValue={audio.length ? audio.length : 0}
           onValueChange={handleSliderChange}
-        /> */}
+          onSlidingStart={handleSliderStart}
+          onSlidingComplete={handleSliderComplete}
+        />
 
-        <View style={{
+        {/* <View style={{
           flex: 1,
           height: 10,
           width: '100%',
@@ -167,7 +195,7 @@ const AudioPlayer = () => {
             width: `${((audio.location / (audio.length === 0 ? 0.1 : audio.length)) * 100)}%`,
             backgroundColor: 'red'
           }}/>
-        </View>
+        </View> */}
 
         <FontAwesome5 style={styles.playIcon} name="backward" size={18} color="black" onPress={handleBackward} />
         <FontAwesome5 style={styles.playIcon} name={audio.played ? 'pause' : 'play'} size={18} onPress={handlePlayPause} />
@@ -175,8 +203,8 @@ const AudioPlayer = () => {
       </View>
 
       <View style={styles.durationConainer}>
-        <Text style={styles.duration}>{new Date(audio.location).toISOString().substring(14, 19)} / </Text>
-        <Text style={styles.duration}>{new Date(audio.length).toISOString().substring(14, 19)}</Text>
+        <Text style={styles.duration}>{getTimeString((audio.location ? audio.location : 0) / 1000)} / </Text>
+        <Text style={styles.duration}>{getTimeString((audio.length ? audio.length : 0) / 1000)}</Text>
       </View>
 
       {/* <Slider
@@ -219,6 +247,7 @@ const styles = StyleSheet.create({
   },
   durationConainer: {
     flexDirection: 'row',
+    // marginTop: -10
     // justifyContent: 'space-between'
   }
 });
