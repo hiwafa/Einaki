@@ -23,7 +23,7 @@ export default function RootApp({ }: EmptyProps) {
                 <View style={{ marginHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 40 : 0 }}>
                     <SwipeButton />
                 </View>
-                <View style={{ flex: 1, marginHorizontal: 10, paddingTop: Platform.OS === 'ios' ? 55 : 0 }}>
+                <View style={{ flex: 1, flexDirection: 'column', marginHorizontal: 10, paddingTop: Platform.OS === 'ios' ? 60 : 10, gap: Platform.OS === 'ios' ? 0 : 10 }}>
                     <AudioPlayer />
                 </View>
             </View>

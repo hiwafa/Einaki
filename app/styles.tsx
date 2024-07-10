@@ -6,7 +6,7 @@ import { circleWidth, buttonWidth } from "./utils/Constants";
 export const lightPrimaryBackColor = "#F6F5F2";
 const lightPrimaryColor = "#191919";
 const lightPrimarySpecificColor = "orange"
-const headerHeight = Platform.OS === 'ios' ? 90 : 70;
+const headerHeight = Platform.OS === 'ios' ? 120 : 70;
 
 export const lightStyles = StyleSheet.create({
 
@@ -23,7 +23,7 @@ export const lightStyles = StyleSheet.create({
         width: '100%',
         shadowColor: lightPrimarySpecificColor,
         shadowOffset: { width: 0, height: 3.5 },
-        shadowOpacity: 2.1,
+        shadowOpacity: 0.9,
         shadowRadius: 1.75,
         elevation: 1,
         flex: 1,

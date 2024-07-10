@@ -1,9 +1,9 @@
 // components/AudioPlayer.js
 import React, { useState, useEffect, useRef, useReducer } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 
 const initialAudio = {
   audioFile: null,
@@ -76,16 +76,16 @@ const AudioPlayer = () => {
             // if (status.didJustFinish && !status.isLooping) {
             // }
 
-              setAudio({
-                type: 'allExceptAudio', value: {
-                  location: status.positionMillis,
-                  length: status.durationMillis,
-                  played: status.isPlaying,
-                  loudness: status.volume
-                }
-              });
+            setAudio({
+              type: 'allExceptAudio', value: {
+                location: status.positionMillis,
+                length: status.durationMillis,
+                played: status.isPlaying,
+                loudness: status.volume
+              }
+            });
 
-            
+
 
           }
         }
@@ -124,7 +124,7 @@ const AudioPlayer = () => {
       try {
         await audio.audioFile.setPositionAsync(value);
       } catch (err) {
-        console.log("handleSliderChange: ", err)
+        console.log("handleSliderChange: ", err, value);
       }
     }
   }
@@ -142,7 +142,7 @@ const AudioPlayer = () => {
   const handleForward = async () => {
     if (audio.audioFile) {
       try {
-        await audio.audioFile.setPositionAsync(audio.location + 50000);
+        await audio.audioFile.setPositionAsync(audio.location + 5000);
       } catch (err) {
         console.log("handleForward: ", err)
       }
@@ -193,14 +193,44 @@ const AudioPlayer = () => {
           }}/>
         </View> */}
 
-        <FontAwesome5 style={styles.playIcon} name="backward" size={18} color="black" onPress={handleBackward} />
-        <FontAwesome5 style={styles.playIcon} name={audio.played ? 'pause' : 'play'} size={18} onPress={handlePlayPause} />
-        <FontAwesome5 style={styles.playIcon} name="forward" size={18} color="black" onPress={handleForward} />
+        <TouchableOpacity style={styles.touchableOpacity} onPress={handleBackward}>
+          <FontAwesome5 style={styles.playIcon} name="backward" size={10} color="black" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.touchableOpacity} onPress={handlePlayPause}>
+          <FontAwesome5 style={styles.playIcon} name={audio.played ? 'pause' : 'play'} size={10} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.touchableOpacity} onPress={handleForward}>
+          <FontAwesome5 style={styles.playIcon} name="forward" size={10} color="black" />
+        </TouchableOpacity>
+
       </View>
 
-      <View style={styles.durationConainer}>
-        <Text style={styles.duration}>{getTimeString(audio.location / 1000)} / </Text>
-        <Text style={styles.duration}>{getTimeString( audio.length / 1000)}</Text>
+      <View style={{
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+      }}>
+        <View style={styles.durationConainer}>
+          <Text style={styles.duration}>{getTimeString(audio.location / 1000)} / </Text>
+          <Text style={styles.duration}>{getTimeString(audio.length / 1000)}</Text>
+        </View>
+
+        <View style={{
+          alignItems: 'center',
+          flexDirection: 'row',
+          gap: 5
+        }}>
+          <TouchableOpacity style={styles.touchableOpacity}>
+            <MaterialIcons name="navigate-before" size={20} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.touchableOpacity}>
+            <MaterialIcons name="navigate-next" size={20} color="black" />
+          </TouchableOpacity>
+
+        </View>
+
       </View>
 
       {/* <Slider
@@ -224,7 +254,9 @@ const styles = StyleSheet.create({
 
   },
   sliderContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5
   },
   slider: {
     flex: 1,
@@ -242,9 +274,23 @@ const styles = StyleSheet.create({
     // cursor: 'pointer'
   },
   durationConainer: {
+    // flex: 1,
     flexDirection: 'row',
     // marginTop: -10
     // justifyContent: 'space-between'
+  },
+  touchableOpacity: {
+    backgroundColor: '#ffffff',
+    elevation: 1,
+    shadowColor: '#ffffff',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.99,
+    shadowRadius: 1.75,
+    width: 28,
+    height: 24,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
