@@ -77,8 +77,56 @@ export const lightStyles = StyleSheet.create({
     },
     animatedSwipeText: {
         // paddingLeft: 10
-    }
+    },
     // swipe styles
+
+
+    // Slider Styles
+    sliderContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5
+      },
+      slider: {
+        flex: 1,
+        minWidth: 200,
+        alignSelf: 'center'
+      },
+      timerStyle: {
+        fontSize: 13
+      },
+      playIcon: {
+        alignSelf: 'center',
+        marginHorizontal: 5,
+      },
+      timerConainer: {
+        flexDirection: 'row',
+      },
+      touchableOpacity: {
+        backgroundColor: '#ffffff',
+        elevation: 1,
+        shadowColor: '#ffffff',
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.99,
+        shadowRadius: 1.75,
+        width: 28,
+        height: 24,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
+      nextPrevLesson: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        gap: 5
+      },
+      timerLessonContainer: {
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+      }
+    // Slider Styles
 });
 
 export const darkStyles = StyleSheet.create({

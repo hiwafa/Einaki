@@ -5,6 +5,8 @@ import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 
+import { lightStyles, darkStyles, lightPrimaryBackColor } from "../app/styles";
+
 const initialAudio = {
   audioFile: null,
   location: 1,
@@ -37,6 +39,9 @@ const getTimeString = (seconds) => {
 };
 
 const AudioPlayer = () => {
+
+  const theme = "light";
+  const styles = theme === "light" ? lightStyles : darkStyles;
 
   const [audio, setAudio] = useReducer(audioReducer, initialAudio);
 
@@ -165,6 +170,8 @@ const AudioPlayer = () => {
     <>
       <View style={styles.sliderContainer}>
 
+      {/* (audio.location / audio.length ) * 100 */}
+
         <Slider
           style={{
             flex: 1,
@@ -179,19 +186,6 @@ const AudioPlayer = () => {
           onSlidingComplete={handleSliderComplete}
         />
 
-        {/* <View style={{
-          flex: 1,
-          height: 10,
-          width: '100%',
-          alignSelf: 'center',
-          backgroundColor: 'green'
-        }}>
-          <View style={{
-            height: 10,
-            width: `${((audio.location / (audio.length === 0 ? 0.1 : audio.length)) * 100)}%`,
-            backgroundColor: 'red'
-          }}/>
-        </View> */}
 
         <TouchableOpacity style={styles.touchableOpacity} onPress={handleBackward}>
           <FontAwesome5 style={styles.playIcon} name="backward" size={10} color="black" />
@@ -206,22 +200,13 @@ const AudioPlayer = () => {
 
       </View>
 
-      <View style={{
-        flex: 1,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-      }}>
-        <View style={styles.durationConainer}>
-          <Text style={styles.duration}>{getTimeString(audio.location / 1000)} / </Text>
-          <Text style={styles.duration}>{getTimeString(audio.length / 1000)}</Text>
+      <View style={styles.timerLessonContainer}>
+        <View style={styles.timerConainer}>
+          <Text style={styles.timerStyle}>{getTimeString(audio.location / 1000)} / </Text>
+          <Text style={styles.timerStyle}>{getTimeString(audio.length / 1000)}</Text>
         </View>
 
-        <View style={{
-          alignItems: 'center',
-          flexDirection: 'row',
-          gap: 5
-        }}>
+        <View style={styles.nextPrevLesson}>
           <TouchableOpacity style={styles.touchableOpacity}>
             <MaterialIcons name="navigate-before" size={20} color="black" />
           </TouchableOpacity>
@@ -233,65 +218,9 @@ const AudioPlayer = () => {
 
       </View>
 
-      {/* <Slider
-        style={styles.slider}
-        value={volume}
-        minimumValue={0}
-        maximumValue={1}
-        onValueChange={handleVolumeChange}
-      /> */}
     </>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // flexDirection: 'row',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // backgroundColor: 'green'
-
-  },
-  sliderContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5
-  },
-  slider: {
-    flex: 1,
-    minWidth: 200,
-    alignSelf: 'center'
-  },
-  duration: {
-    fontSize: 13,
-    // marginHorizontal: 30,
-    // marginRight: 100
-  },
-  playIcon: {
-    alignSelf: 'center',
-    marginHorizontal: 5,
-    // cursor: 'pointer'
-  },
-  durationConainer: {
-    // flex: 1,
-    flexDirection: 'row',
-    // marginTop: -10
-    // justifyContent: 'space-between'
-  },
-  touchableOpacity: {
-    backgroundColor: '#ffffff',
-    elevation: 1,
-    shadowColor: '#ffffff',
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.99,
-    shadowRadius: 1.75,
-    width: 28,
-    height: 24,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-});
 
 export default AudioPlayer;
