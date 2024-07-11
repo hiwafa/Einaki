@@ -5,10 +5,8 @@ import { Link } from "expo-router";
 
 import { lightStyles, darkStyles } from "./styles";
 import SwipeButton from "../components/SwipeButton";
-import AudioSlider from "../components/AudioSlider";
 import AudioPlayer from "../components/AudioPlayer";
 
-import Slider from '@react-native-community/slider';
 
 export interface EmptyProps { }
 
@@ -30,7 +28,6 @@ export default function RootApp({ }: EmptyProps) {
             <View style={styles.overflowContainer}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
                     <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus cupiditate esse est eaque saepe, itaque accusamus ab sed maxime perspiciatis et vel ad reiciendis. Fugiat temporibus dignissimos asperiores quos cumque.</Text>
-
                 </ScrollView>
             </View>
         </View>

@@ -12,7 +12,8 @@ const initialAudio = {
   location: 1,
   length: 1000,
   played: false,
-  loudness: 0.7
+  loudness: 0.7,
+  loadingStatus: false
 }
 
 const audioReducer = (state, { type, value }) => {
@@ -22,6 +23,8 @@ const audioReducer = (state, { type, value }) => {
     case "allExceptAudio":
       return { ...value, audioFile: state.audioFile };
     case "audioFile":
+      return { ...state, [type]: value }
+    case "loading":
       return { ...state, [type]: value }
     default: return state;
   }
@@ -58,16 +61,21 @@ const AudioPlayer = () => {
         location: 10,
         length: audio.length + 1,
         played: audio.played,
-        loudness: 0.7
+        loudness: 0.7,
+        loadingStatus: false
       }
     })
   }
 
   const loadSound = async () => {
 
+    setAudio({
+      type: 'loadingStatus',
+      value: true
+    })
+
     try {
-      const { sound } = await Audio.Sound.createAsync(
-        require('../assets/audios/sample.mp3'),
+      const { sound } = await Audio.Sound.createAsync({uri: 'https://6a63fca904fd268f15f7-d5770ffdd579eb31eaa89faeffc55fe7.ssl.cf1.rackcdn.com/LE_listening_B1_A_phone_call_from_a_customer.mp3'},
         {
           shouldPlay: true, // Automatically start playing the sound
           // volume: 0.5,      // Set initial volume to 50%
@@ -86,7 +94,8 @@ const AudioPlayer = () => {
                 location: status.positionMillis,
                 length: status.durationMillis,
                 played: status.isPlaying,
-                loudness: status.volume
+                loudness: status.volume,
+                loadingStatus: false
               }
             });
 
@@ -178,6 +187,9 @@ const AudioPlayer = () => {
             width: '100%',
             alignSelf: 'center',
           }}
+          thumbTintColor='#fff'
+          maximumTrackTintColor='#000'
+          minimumTrackTintColor='#fff'
           value={audio.location}
           minimumValue={0}
           maximumValue={audio.length}
@@ -187,14 +199,14 @@ const AudioPlayer = () => {
         />
 
 
-        <TouchableOpacity style={styles.touchableOpacity} onPress={handleBackward}>
+        <TouchableOpacity disabled={audio.loadingStatus} style={styles.touchableOpacity} onPress={handleBackward}>
           <FontAwesome5 style={styles.playIcon} name="backward" size={10} color="black" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.touchableOpacity} onPress={handlePlayPause}>
+        <TouchableOpacity disabled={audio.loadingStatus} style={styles.touchableOpacity} onPress={handlePlayPause}>
           <FontAwesome5 style={styles.playIcon} name={audio.played ? 'pause' : 'play'} size={10} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchableOpacity} onPress={handleForward}>
+        <TouchableOpacity disabled={audio.loadingStatus} style={styles.touchableOpacity} onPress={handleForward}>
           <FontAwesome5 style={styles.playIcon} name="forward" size={10} color="black" />
         </TouchableOpacity>
 
