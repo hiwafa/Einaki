@@ -6,7 +6,8 @@ import { Link } from "expo-router";
 import { lightStyles, darkStyles } from "./styles";
 import SwipeButton from "../components/SwipeButton";
 import AudioPlayer from "../components/AudioPlayer";
-
+import { StatusBar } from 'expo-status-bar';
+import Constants from 'expo-constants';
 
 export interface EmptyProps { }
 
@@ -17,11 +18,17 @@ export default function RootApp({ }: EmptyProps) {
 
     return (
         <View style={styles.mainContainer}>
-            <View style={styles.mainHeader}>
+            <View style={{
+                position: 'absolute',
+                top: 0, height: Constants.statusBarHeight,
+                width: '100%',
+                backgroundColor: 'orange'
+            }} />
+            <View style={[styles.mainHeader, {marginTop: Constants.statusBarHeight}]}>
                 <View style={{ marginHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 40 : 0 }}>
                     <SwipeButton />
                 </View>
-                <View style={{ flex: 1, flexDirection: 'column', marginHorizontal: 10, paddingTop: Platform.OS === 'ios' ? 60 : 10, gap: Platform.OS === 'ios' ? 0 : 10 }}>
+                <View style={{ flex: 1, flexDirection: 'column', marginHorizontal: 10, paddingTop: 10, gap: Platform.OS === 'ios' ? 0 : 5 }}>
                     <AudioPlayer />
                 </View>
             </View>
@@ -30,6 +37,7 @@ export default function RootApp({ }: EmptyProps) {
                     <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus cupiditate esse est eaque saepe, itaque accusamus ab sed maxime perspiciatis et vel ad reiciendis. Fugiat temporibus dignissimos asperiores quos cumque.</Text>
                 </ScrollView>
             </View>
+            <StatusBar style="light" backgroundColor="orange" />
         </View>
     )
 }

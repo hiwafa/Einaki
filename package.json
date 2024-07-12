@@ -25,7 +25,8 @@
     "expo-asset": "~10.0.9",
     "react-native-svg": "15.2.0",
     "@react-native-community/slider": "4.5.2",
-    "expo-av": "~14.0.6"
+    "expo-av": "~14.0.6",
+    "expo-constants": "~16.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -185,7 +185,7 @@ const AudioPlayer = () => {
           style={{
             flex: 1,
             width: '100%',
-            alignSelf: 'center',
+            alignSelf: 'center'
           }}
           thumbTintColor='#fff'
           maximumTrackTintColor='#000'
