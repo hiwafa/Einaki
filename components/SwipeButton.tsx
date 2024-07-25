@@ -7,6 +7,7 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { lightStyles, darkStyles, lightPrimaryBackColor } from "../app/styles";
 
 import { buttonWidth, circleWidth } from "../app/utils/Constants";
+import { useRouter } from "expo-router";
 
 export default function SwipeButton() {
 
@@ -27,6 +28,8 @@ const Swiping = () => {
 
     const theme = "light";
     const styles = theme === "light" ? lightStyles : darkStyles;
+
+    const route = useRouter();
 
     const offset = useSharedValue(defaultXTranslation);
     const checker = useSharedValue(false);
@@ -61,6 +64,9 @@ const Swiping = () => {
         if (offset.value > (calculatedValue / 2)) {
             offset.value = withSpring(calculatedValue);
             checker.value = true;
+            setTimeout(() => {
+                route.push('/profile')
+            }, 1000);
         } else {
             offset.value = withSpring(defaultXTranslation);
             checker.value = false;

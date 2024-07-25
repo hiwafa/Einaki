@@ -25,6 +25,7 @@ export default function StackLayout() {
 
             <Stack>
                 <Stack.Screen name="index" options={{ headerTitle: "Home", headerShown: false }} />
+                <Stack.Screen name="[missing]" options={{ headerTitle: "Page Not Found" }} />
             </Stack>
 
         </GlobalContext.Provider>
