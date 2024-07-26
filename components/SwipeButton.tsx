@@ -35,6 +35,8 @@ const Swiping = () => {
     const checker = useSharedValue(false);
     const onSwipe = useSharedValue(false);
 
+    const [txt, setTxt] = useState("Go to Settings");
+
     const gesture = Gesture.Pan().onBegin(() => {
         onSwipe.value = true;
     }).onUpdate(e => {
@@ -59,17 +61,19 @@ const Swiping = () => {
             }
         }
 
-    }).onEnd(e => {
+    }).runOnJS(true).onEnd(e => {
 
         if (offset.value > (calculatedValue / 2)) {
             offset.value = withSpring(calculatedValue);
             checker.value = true;
-            setTimeout(() => {
+            setTxt("Go to Home");
+            setTimeout(() => { 
                 route.push('/profile')
             }, 1000);
         } else {
             offset.value = withSpring(defaultXTranslation);
             checker.value = false;
+            setTxt("Go to Settings");
         }
  
     }).onFinalize(() => {
@@ -96,7 +100,7 @@ const Swiping = () => {
                 </Animated.View>
             </GestureDetector>
             <Animated.Text style={[styles.animatedSwipeText, animatedTextStyle]}>
-                {checker.value === false ? "Go to Settings" : "Go to Home"}
+                {txt}
             </Animated.Text>
         </View>
     )
