@@ -69,7 +69,7 @@ const Swiping = () => {
             setTxt("Go to Home");
             setTimeout(() => { 
                 route.push('/profile')
-            }, 1000);
+            }, 500);
         } else {
             offset.value = withSpring(defaultXTranslation);
             checker.value = false;

@@ -26,6 +26,7 @@ export const lightStyles = StyleSheet.create({
         shadowOpacity: 0.9,
         shadowRadius: 1.75,
         elevation: 1,
+        zIndex: 10,
         // flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
@@ -36,7 +37,8 @@ export const lightStyles = StyleSheet.create({
         height: height - headerHeight,
         width: '100%',
         paddingTop: 20,
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        // backgroundColor: 'lightblue'
     },
     scrollView: {
         // padding: 10,
