@@ -70,10 +70,14 @@ const Swiping = () => {
             setTimeout(() => { 
                 route.push('/profile')
             }, 500);
+            
         } else {
             offset.value = withSpring(defaultXTranslation);
             checker.value = false;
             setTxt("Go to Settings");
+            setTimeout(() => { 
+                route.push('/')
+            }, 500);
         }
  
     }).onFinalize(() => {
