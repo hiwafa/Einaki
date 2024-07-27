@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, TextInput, Button, StyleSheet, Platform, Text } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Platform, Text, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Link, useRouter } from 'expo-router';
 import api from '../_api';
@@ -11,20 +11,39 @@ const CreateUser = () => {
     const [userPassword, setUserPassword] = useState('');
     const [userInfo, setUserInfo] = useState('');
     const [userDateOfBirth, setUserDateOfBirth] = useState(new Date());
-    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [userDateOfBirthWeb, setUserDateOfBirthWeb] = useState("");
 
     const router = useRouter();
 
     const handleSubmit = async () => {
-        const newUser = { userFirstName, userLastName, userEmail, userPassword, userInfo, userDateOfBirth };
+
+        let newUser = null;
+        if (userDateOfBirth && userDateOfBirthWeb !== "") {
+
+            const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
+            if (Platform.OS === 'web' && !dateRegex.test(userDateOfBirthWeb)) {
+                alert("Please enter the date in the format DD-MM-YYYY.");
+                return;
+            }
+
+            if (Platform.OS === 'web') {
+                const [day, month, year] = userDateOfBirthWeb.split('-');
+                const formattedDate = new Date(`${year}-${month}-${day}`);
+                newUser = { userFirstName, userLastName, userEmail, userPassword, userInfo, userDateOfBirth: formattedDate };
+            }else{
+                newUser = { userFirstName, userLastName, userEmail, userPassword, userInfo, userDateOfBirth };
+            }
+
+        } else {
+            newUser = { userFirstName, userLastName, userEmail, userPassword, userInfo };
+        }
+
         await api.post('/users', newUser);
         router.navigate('users');
     };
 
     const handleDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || userDateOfBirth;
-        setShowDatePicker(Platform.OS === 'ios');
-        setUserDateOfBirth(currentDate);
+        setUserDateOfBirth(selectedDate);
     };
 
     return (
@@ -36,21 +55,30 @@ const CreateUser = () => {
             <TextInput placeholder="Info" value={userInfo} onChangeText={setUserInfo} style={[styles.input]} />
 
             {
-                Platform.OS === 'web' ? 
-                null :
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                }}>
-                    <Text>Date of Birth:</Text>
-                    <DateTimePicker
-                        value={userDateOfBirth}
-                        mode="date"
-                        display="default"
-                        onChange={handleDateChange}
-                    />
-                </View>
+                Platform.OS === 'web' ?
+                    <View>
+                        <Text>Date of Birth (YYYY-MM-DD):</Text>
+                        <TextInput
+                            placeholder="YYYY-MM-DD"
+                            value={userDateOfBirthWeb}
+                            onChangeText={setUserDateOfBirthWeb}
+                            style={styles.input}
+                            keyboardType="numeric"
+                        />
+                    </View> :
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}>
+                        <Text>Date of Birth:</Text>
+                        <DateTimePicker
+                            value={userDateOfBirth}
+                            mode="date"
+                            display="default"
+                            onChange={handleDateChange}
+                        />
+                    </View>
             }
 
             <Button title="Create User" onPress={handleSubmit} />

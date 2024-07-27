@@ -9,7 +9,7 @@ const UsersScreen = () => {
     const router = useRouter();
 
     const isAdmin: any = false;
-    if (isAdmin === false) return <Redirect href={'/'} />
+    // if (isAdmin === false) return <Redirect href={'/'} />
 
     useEffect(() => {
 
