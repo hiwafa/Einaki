@@ -32,7 +32,7 @@ export default function StackLayout() {
             ...GlobalData
         }}>
 
-            <View style={{
+            {/* <View style={{
                 position: 'absolute',
                 top: 0, height: Constants.statusBarHeight,
                 width: '100%',
@@ -46,7 +46,7 @@ export default function StackLayout() {
                 <View style={{ flex: 1, flexDirection: 'column', marginHorizontal: 10, paddingTop: 10, gap: Platform.OS === 'ios' ? 0 : 5 }}>
                     <AudioPlayer />
                 </View>
-            </View>
+            </View> */}
 
 
             <Stack>

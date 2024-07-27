@@ -18,7 +18,7 @@ export default function RootApp({ }: EmptyProps) {
 
     return (
         <View style={styles.mainContainer}>
-            {/* <View style={{
+            <View style={{
                 position: 'absolute',
                 top: 0, height: Constants.statusBarHeight,
                 width: '100%',
@@ -31,10 +31,10 @@ export default function RootApp({ }: EmptyProps) {
                 <View style={{ flex: 1, flexDirection: 'column', marginHorizontal: 10, paddingTop: 10, gap: Platform.OS === 'ios' ? 0 : 5 }}>
                     <AudioPlayer />
                 </View>
-            </View> */}
+            </View>
             <View style={styles.overflowContainer}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
-                    <Link href='/users/create'>Create User</Link>
+                    <Link href='/userprofile'>profile</Link>
                     <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus cupiditate esse est eaque saepe, itaque accusamus ab sed maxime perspiciatis et vel ad reiciendis. Fugiat temporibus dignissimos asperiores quos cumque.</Text>
                     <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus cupiditate esse est eaque saepe, itaque accusamus ab sed maxime perspiciatis et vel ad reiciendis. Fugiat temporibus dignissimos asperiores quos cumque.</Text>
                     <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus cupiditate esse est eaque saepe, itaque accusamus ab sed maxime perspiciatis et vel ad reiciendis. Fugiat temporibus dignissimos asperiores quos cumque.</Text>
