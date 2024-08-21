@@ -15,18 +15,19 @@ type Props = {
 type ListItemProps = {
   iconType: Function;
   icon: string;
-  color: string;
+  color?: string;
   name: string;
   desc: string;
 }
 type CTAItemProps = {
   iconType: Function;
   iconName: string;
-  color: string;
+  color?: string;
   name: string;
 }
 
 export const MembersTab = ({ iconName, text, color }: Props) => {
+  // return null
   return (
     <View style={[styles.optionList, { alignItems: 'center' }]}>
       <View style={styles.circleIconContainer}>
@@ -38,6 +39,7 @@ export const MembersTab = ({ iconName, text, color }: Props) => {
 }
 
 export const ListItem = ({ iconType, icon, color, name, desc }: ListItemProps) => {
+  // return null
   return (
     <View style={styles.optionList}>
       <Icon type={iconType} name={icon} color={Colors.gray} />
@@ -50,6 +52,7 @@ export const ListItem = ({ iconType, icon, color, name, desc }: ListItemProps) =
 }
 
 export const CTAItems = ({ iconName, iconType, color, name }: CTAItemProps) => {
+  // return null
   return (
     <View style={styles.listItem}>
       <Icon name={iconName} type={iconType} color={Colors.green} />

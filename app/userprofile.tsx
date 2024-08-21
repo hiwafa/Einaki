@@ -25,7 +25,9 @@ const HeaderAnim2 = () => {
 
   const bgColor = dark ? Colors.darkHeaderColor : Colors.light;
   const bgColor2 = dark ? Colors.darkGray : Colors.green;
+
   const offsetValue = 140;
+
   const animatedHeader = useAnimatedStyle(() => {
     const headerInitialHeight = 130;
     const headerNextHeight = Platform.OS === 'ios' ? 110 : 120;
@@ -44,7 +46,8 @@ const HeaderAnim2 = () => {
     return {
       backgroundColor, height
     }
-  })
+  });
+  
   const nameAnimatedStyles = useAnimatedStyle(() => {
     const opacity = interpolate(
       scrollY.value,
@@ -65,7 +68,9 @@ const HeaderAnim2 = () => {
       Extrapolation.CLAMP,
     )
     return { opacity, transform: [{ translateX }, { translateY }] }
-  })
+  });
+
+
   const animImage = useAnimatedStyle(() => {
     const yValue = Platform.OS === 'ios' ? 54 : 45;
     const translateY = interpolate(
